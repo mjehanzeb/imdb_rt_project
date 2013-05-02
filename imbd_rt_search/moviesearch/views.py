@@ -21,7 +21,6 @@ def index(request):
 		# In case we don't find record in our db then we'll make api call to RottonTomatoes or IMDB
 		try:
 			movie_list = [Movie.objects.get(title=q)]
-			#import pdb;  pdb.set_trace();
 		except Movie.DoesNotExist:
 			movie_list = api.get_movies(q, search_on)			
 			api_result = True
@@ -37,7 +36,6 @@ def movie(request, movie_id, search_on = 'rt'):
 
 		try:
 			movie = Movie.objects.get(movie_id=movie_id)
-			#import pdb;  pdb.set_trace();
 			actors = movie.actors.all()
 		except Movie.DoesNotExist:
 			movie = api.get_movie_detail(movie_id, search_on)

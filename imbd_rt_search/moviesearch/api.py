@@ -77,7 +77,6 @@ def format_rt_movie(movie_data):
 	movie['poster'] = movie.get('posters')['detailed']
 
 	movie['actors'] = []
-	#import pdb;  pdb.set_trace();
 
 	return movie
 
@@ -111,4 +110,3 @@ def save_movie(movie, search_on):
 		for actor in movie['actors']:
 			actor_object, created = models.Actor.objects.get_or_create(name=actor)
 			movie_object.actors.add(actor_object)
-	
