@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block title %}Movie Search result{% endblock %}
+
+{% block content %}
+
+<form action="" method="get" class="form-search">
+	<div class="input-append">
+		<input type="text" value="{{ q }}"class=" search-query input-xxlarge" name="q" id="q" placeholder="type movie name to search">
+    <select name="search_on">
+      {% for k, v in search_sources.items %}
+        <option value="{{ k }}" {% if k == search_on %}selected="selected"{% endif %} >Search on {{ v }}</option>
+      {% endfor %}
+    </select>
+		<button type="submit" class="btn btn-primary">Search</button>
+	</div>
+</form>
+{% if movie_list %}
+<caption>Found <strong>{{movie_list|length}}</strong> movie{{ movie_list|pluralize }} for <strong>"{{q}}"</strong> : </caption>
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Poster</th>
+      <th width="250">Movie Title</th>
+      <th>Year Release</th>
+      <th>Details</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for movie in movie_list %}
+    {% if api_result == False %}    
+      {% url 'movie_detail' movie_id=movie.movie_id search_on=movie.movie_source as movie_link %}
+    {% elif search_on == 'rt' %}
+      {% url 'movie_detail' movie_id=movie.id search_on=search_on as movie_link %} 
+    {% else %}
+      {% url 'movie_detail' movie_id=movie.imdb_id search_on=search_on as movie_link %} 
+    {% endif %}
+      <tr style="cursor:pointer;" onclick="location.href='{{ movie_link }}'">
+      <td>{{ forloop.counter }}</td>
+        <td>
+          {% if search_on == 'rt' and api_result = True %}
+            <img src="{{movie.posters.thumbnail}}" alt="{{movie.title}}" class="img-rounded"/>
+          {% else %}
+            <img src="{{movie.poster}}" alt="{{movie.title}}" class="img-rounded" width=100/>
+          {% endif %}
+
+        </td>
+        <td>{{movie.title}}</td>
+        <td>{{movie.year}}</td>
+        <td><i class="icon-film"></i></td>
+      </tr>
+   {% endfor %}
+  </tbody>
+</table>
+{% endif %}
+
+{% endblock %}
+

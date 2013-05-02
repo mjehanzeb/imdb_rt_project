@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Movie - {% endblock %}
+
+{% block content %}
+
+{% if movie %}
+
+<ul class="nav nav-pills">
+    <li class="active">
+     <a href="javascript:history.back(-1);">Go back to search results</a>
+    </li>
+</ul>
+
+<table class="table table-striped">
+  
+  <tbody>
+    <tr>
+      <td>
+          <img src="{{movie.poster}}" alt="{{movie.title}}" class="img-rounded"/>
+      </td>
+      <td width="65%">
+        <table style="width: 100%">
+            <tr>
+                <td class="border-none">
+                    <h2>{{movie.title}} ({{movie.year}})</h2>
+                </td>
+            </tr>
+            {% if movie.synopsis %}
+            <tr>
+              <td>
+                <h4>Movie Info</h4>
+                {{movie.synopsis}}
+              </td>
+            </tr>
+            {% endif %}
+            <tr>
+                <td>
+                    <table class="table table-bordered">
+                      <tr>
+                            <td>
+                              Runtime: {{movie.runtime|time:"H:i"}}{{movie.duration_formatted}}
+                            </td>
+                      </tr>
+                      <tr>
+                          <td> Year: {{movie.year}}</td>
+                      </tr>
+                    </table>
+                </td>
+            </tr>
+            
+
+        </table>
+        </td>
+    </tr>
+
+      {% if movie.actors.all %}
+            <tr>
+                <td>
+                    <strong>Actors:</strong>
+                  <td>
+            </tr>
+          
+            {%  for actor in movie.actors.all %}
+            <tr>
+                <td>
+                    {{actor.name}}
+                  <td>
+            </tr>
+            {% endfor %}
+      
+      {% endif %}
+         
+
+  </tbody>
+</table>
+
+{% endif %}
+
+{% endblock %}
